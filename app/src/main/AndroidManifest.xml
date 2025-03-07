@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/app_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/app_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TatvicApp"
+        tools:targetApi="31"
+        >
+
+
+
+
+        <activity
+            android:name="com.playagain.tatvicapp.thankyouActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.playagain.tatvicapp.categoryActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="deep-link-demo-dd1fc.web.app"
+                    android:scheme="https"/>
+
+                <data android:scheme="http"/>
+            </intent-filter>
+
+        </activity>
+
+
+        <activity
+            android:name="com.playagain.tatvicapp.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <meta-data android:name="google_analytics_automatic_screen_reporting_enabled" android:value="false" />
+    </application>
+
+</manifest>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.playagain.tatvicapp.MainActivity">
+
+    <ImageView
+        android:id="@+id/inImage"
+        android:layout_width="352dp"
+        android:layout_height="188dp"
+        android:layout_margin="40dp"
+        android:src="@drawable/cars"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/carCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:text="Car categories"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/inImage"
+        tools:layout_editor_absoluteX="0dp"
+        android:backgroundTint="#152238"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

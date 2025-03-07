@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308517145756",
+    "project_id": "tatvic-app-47572",
+    "storage_bucket": "tatvic-app-47572.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308517145756:android:11b9fb9980c11bc7687159",
+        "android_client_info": {
+          "package_name": "com.playagain.tatvicapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsIiB6xNaW9CDhUchVgEIXUG5zrhnSmbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
