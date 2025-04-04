@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,20 +18,22 @@
         >
 
 
-
-
         <activity
             android:name="com.playagain.tatvicapp.thankyouActivity"
             android:exported="false" />
         <activity
             android:name="com.playagain.tatvicapp.categoryActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:autoVerify="true">
+
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:host="deep-link-demo-dd1fc.web.app"
+                    android:path="/product.html"
                     android:scheme="https"/>
 
                 <data android:scheme="http"/>

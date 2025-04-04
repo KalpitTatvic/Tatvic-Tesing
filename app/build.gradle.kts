@@ -11,7 +11,7 @@ android {
         applicationId = "com.playagain.tatvicapp"
         minSdk = 30
         targetSdk = 34
-        versionCode = 2
+        versionCode = 11
         versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -45,4 +45,5 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     implementation ("com.android.installreferrer:installreferrer:2.2")
+    implementation ("com.google.firebase:firebase-dynamic-links:22.1.0")
 }

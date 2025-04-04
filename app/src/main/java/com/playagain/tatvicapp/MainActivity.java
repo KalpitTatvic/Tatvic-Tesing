@@ -19,10 +19,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.installations.FirebaseInstallations;
 import com.playagain.tatvicapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.net.URLDecoder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +48,20 @@ public class MainActivity extends AppCompatActivity {
         carCategory = findViewById(R.id.carCategory);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Retrieve Client ID
+        Task<String> clientIdTask = FirebaseInstallations.getInstance().getId();
+        clientIdTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String clientId = task.getResult();
+                Log.d("CLIENT_ID", "Client ID: " + clientId);
+
+                // You can send this client ID to GA4 as a user property
+                Bundle bundle = new Bundle();
+                bundle.putString("client_id", clientId);
+                mFirebaseAnalytics.logEvent("client_id_event", bundle);
+            }
+        });
 
         FirebaseAnalytics.getInstance(this).getAppInstanceId().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
@@ -74,6 +92,15 @@ public class MainActivity extends AppCompatActivity {
             Log.d("deepLink", "No deep link URL found");
         }
 
+        Bundle params1 = new Bundle();
+        params1.putString(FirebaseAnalytics.Param.SOURCE, "attribution_source");
+        params1.putString(FirebaseAnalytics.Param.MEDIUM, "attribution_medium");
+        params1.putString(FirebaseAnalytics.Param.CAMPAIGN, "attribution_campaign");
+        params1.putString(FirebaseAnalytics.Param.TERM, "attribution_term");
+        params1.putString(FirebaseAnalytics.Param.CONTENT, "attribution_content");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.CAMPAIGN_DETAILS, params1);
+
+
         carCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,10 +113,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // ********** Start: Play Install Referrer Tracking Code **********
+// ********** Start: Play Install Referrer Tracking Code **********
 
         // Initialize Install Referrer Client
         InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(this).build();
+
 
         referrerClient.startConnection(new InstallReferrerStateListener() {
             @Override
@@ -100,13 +128,28 @@ public class MainActivity extends AppCompatActivity {
                             // Retrieve the referrer details
                             ReferrerDetails response = referrerClient.getInstallReferrer();
                             String referrerUrl = response.getInstallReferrer();
-
-                            // Log the full referrer URL
-                            Log.d("InstallReferrer", "Full Referrer URL: https://play.google.com/store/apps/details?id="
-                                    + getPackageName() + "&referrer=" + referrerUrl);
+                            String decodedReferrerUrl = URLDecoder.decode(referrerUrl, "UTF-8");
 
                             // Log the referrer URL
-                            Log.d("InstallReferrer", "Referrer URL: " + referrerUrl);
+                            Log.d("InstallReferrer", "Referrer URL: " + decodedReferrerUrl);
+
+                            // Extract the utm_source parameter
+                            String utmSource = getUrlParameter(decodedReferrerUrl, "utm_source");
+
+                            if (utmSource != null) {
+                                Log.d("InstallReferrer", "utm_source: " + utmSource);
+                            } else {
+                                Log.d("InstallReferrer", "utm_source not found");
+                            }
+
+                            // Extract the utm_medium parameter
+                            String utmMedium = getUrlParameter(decodedReferrerUrl, "utm_medium");
+
+                            if (utmMedium != null) {
+                                Log.d("InstallReferrer", "utm_medium: " + utmMedium);
+                            } else {
+                                Log.d("InstallReferrer", "utm_medium not found");
+                            }
 
                             // End the connection
                             referrerClient.endConnection();
@@ -142,6 +185,20 @@ public class MainActivity extends AppCompatActivity {
 //        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.CAMPAIGN_DETAILS,campaignParams);
     }
 //=========================================================================================
+
+
+    // Helper method to extract URL parameters
+    private String getUrlParameter(String url, String parameterName) {
+        String[] params = url.split("&");
+        for (String param : params) {
+            String[] keyValue = param.split("=");
+            if (keyValue.length == 2 && keyValue[0].equals(parameterName)) {
+                return keyValue[1];
+            }
+        }
+        return null; // Parameter not found
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -151,3 +208,4 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
 }
+

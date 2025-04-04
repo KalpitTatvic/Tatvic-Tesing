@@ -1,6 +1,7 @@
 package com.playagain.tatvicapp;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +45,10 @@ public class categoryActivity extends AppCompatActivity {
         car2Layout=findViewById(R.id.linearLayout2);
         car3Layout = findViewById(R.id.linearLayout3);
 
+//dynamic link code
+
+//dynamic link code
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         FirebaseAnalytics.getInstance(this).getAppInstanceId().addOnCompleteListener(new OnCompleteListener<String>() {
@@ -57,12 +62,24 @@ public class categoryActivity extends AppCompatActivity {
         });
 
 
+
+
         uri = getIntent().getData();
 
         if (uri != null){
 
             path = uri.toString();
             Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
+            Log.d("DeepLink", "Deep link URL: " + uri);
+
+// You can process the deep link parameters here
+            String path = uri.getPath();  // e.g., "/app"
+            Log.d("DeepLink", "Path: " + path);
+
+            // Optionally, extract query parameters
+            String utmSource = uri.getQueryParameter("utm_source");
+            Log.d("DeepLink", "utm_source: " + utmSource);
+
         }
 //================================================================
         // Get the Intent that started the activity
@@ -129,6 +146,26 @@ public class categoryActivity extends AppCompatActivity {
         });
     }
 
+//dynamic link code********************************************
+
+//    public String createDynamicLink(String deepLinkPath, String referralParam) {
+//        String packageName = getPackageName();
+//        String deepLinkUrl = "https://deep-link-demo-dd1fc.web.app" + deepLinkPath;
+//
+//        if (referralParam != null && !referralParam.isEmpty()) {
+//            deepLinkUrl += "?referral=" + referralParam;
+//        }
+//
+//        // Create the final URL with required parameters
+//        Uri.Builder builder = Uri.parse("https://deep-link-demo-dd1fc.web.app").buildUpon()
+//                .appendQueryParameter("apn", packageName)
+//                .appendQueryParameter("link", deepLinkUrl);
+//
+//        return builder.build().toString();
+//    }
+
+//dynamic link code********************************************
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -136,5 +173,10 @@ public class categoryActivity extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "categoryScreen");
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, this.getClass().getSimpleName());
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+
+
     }
+
 }
+
+
